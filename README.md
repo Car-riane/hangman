@@ -1,43 +1,89 @@
 # Hangman
 
-A classic game of Hangman that runs in your terminal. This Ruby script lets you play, save your progress, and load previous games.
+A terminal-based Hangman game written in Ruby. Guess the secret word one letter at a time — but watch out, you only get 6 wrong guesses before it's game over. Save your progress mid-game and come back to it later.
+
+---
 
 ## Features
 
-  * **Save/Load Game:** Don't lose your progress\! You can save your game at any time and load it back up from the main menu.
-  * **Simple UI:** A clean, text-based interface shows your guessed letters, the word-in-progress, and your remaining attempts.
-  * **Word Dictionary:** Pulls a random 5-12 letter word from the included `google-10000-english-no-swears.txt` dictionary.
-  * **Classic Rules:** You have 6 incorrect attempts to guess the secret word before the man is... well, you know.
+- 🎲 **Random word selection** — picks from a filtered dictionary of 10,000 common English words (5–12 letters, no swears)
+- 💾 **Save & load system** — save your game state to a YAML file at any time and resume later
+- 🔁 **Multiple save slots** — name your saves and choose from a list when loading
+- ✅ **Input validation** — handles duplicate guesses, invalid characters, and corrupt save files gracefully
+- 🖥️ **Clean terminal UI** — displays word progress, incorrect guesses, and remaining attempts on each turn
 
-## Prerequisites
-
-1.  **Ruby:** You must have Ruby installed on your system.
-2.  **Word List:** This game requires the `google-10000-english-no-swears.txt` file. It **must** be in the same folder as `game.rb` to work.
-3.  **Gems (if any):** This script uses the `yaml` gem, which is part of the standard Ruby library, so no special installation is usually needed. If a `Gemfile` is present, you may need to run:
-    ```sh
-    bundle install
-    ```
+---
 
 ## How to Play
 
-1.  **Run the game** from your terminal:
+**Prerequisites:** Ruby must be installed on your system. Verify with:
 
-    ```sh
-    ruby game.rb
-    ```
+```bash
+ruby -v
+```
 
-2.  **Choose an option:**
+**Run the game:**
 
-      * Type `1` for a **New Game**.
-      * Type `2` to **Load a previous game**. This will show you a list of your saved files from the `saves/` directory.
+```bash
+ruby game.rb
+```
 
-3.  **Start guessing\!**
+**On startup, choose:**
+- `1` — Start a new game
+- `2` — Load a previously saved game
 
-      * Enter a single letter and press Enter.
-      * The game will show your progress, your incorrect guesses, and your remaining attempts.
+**During the game:**
+- Type a single letter and press Enter to guess
+- Type `save` instead of a letter to save your progress and exit
+- You have **6 incorrect guesses** before the game ends
 
-4.  **Save your game (optional):**
+---
 
-      * At any time when prompted for a guess, type `save` instead of a letter.
-      * You will be asked to name your save file (e.g., `my_game`).
-      * Your game state is saved as `my_game.yaml` in the `saves/` directory, and the game will exit. You can load this file next time.
+## Project Structure
+
+```
+hangman/
+├── game.rb                            # Main game logic and loop
+├── player.rb                          # Player input handling
+├── google-10000-english-no-swears.txt # Word dictionary
+├── Gemfile                            # Ruby dependencies
+└── saves/                             # Auto-created when you save a game
+    └── your_save.yaml
+```
+
+---
+
+## How Save/Load Works
+
+Game state is serialized to YAML and stored in a `saves/` directory. Each save captures:
+- The secret word
+- All guessed letters so far
+- Remaining attempts
+
+On load, the game reads the YAML file and resumes exactly where you left off.
+
+---
+
+## What I Learned
+
+- Structuring a Ruby program with clearly separated responsibilities (word loading, display, save/load, game loop)
+- Reading and writing files with Ruby's `File` and `Dir` classes
+- Serializing game state with the `yaml` library
+- Handling edge cases like missing files, empty input, duplicate guesses, and corrupt saves
+
+---
+
+## Built With
+
+- Ruby
+- YAML (standard library)
+
+---
+
+## Future Improvements
+
+- Add RSpec test coverage for game logic
+- Add a visual ASCII hangman drawing
+- Allow the player to choose difficulty (word length or guess limit)
+- Refactor into a class-based OOP structure
+
